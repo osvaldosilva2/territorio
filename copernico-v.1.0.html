@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<title>Territorio Copernico</title>
+	
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> 
+
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 100%;
+			width: 100%;
+			max-width: 100%;
+			max-height: 100%;
+		}
+		.my-area {
+			display: none;
+		}
+		.my-square {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 12px;
+			font-size: 1.3em;
+			font-weight: bold;
+			display: none;
+		}
+		.my-number {
+			font-family: Arial, Helvetica, sans-serif;
+			font-size: 14px;
+			font-size: 1.4em;
+			font-weight: bold;
+		}
+		.divTable{
+			display: table;
+			width: 100%;
+			height: 100%;
+		}
+		.divTableRow {
+			display: table-row;
+		}
+		.divTableHeading {
+			background-color: #EEE;
+			display: table-header-group;
+		}
+		.divTableCell, .divTableHead {
+			border: 0px solid #999999;
+			display: table-cell;
+			padding: 3px 10px;
+		}
+		.divTableHeading {
+			background-color: #EEE;
+			display: table-header-group;
+			font-weight: bold;
+		}
+		.divTableFoot {
+			background-color: #EEE;
+			display: table-footer-group;
+			font-weight: bold;
+		}
+		.divTableBody {
+			display: table-row-group;
+		}
+	</style>
+</head>
+<body>
+
+<div style="width: 10%; float:left">	
+	<div class="divTable" style="width: 100%;" >
+		<div class="divTableBody">
+			<div class="divTableRow">
+				<div class="divTableCell"><h4><a id="aim_home" href="#">Congregacion Copernico</a></h4></div>
+			</div>
+		</div>
+	</div>
+	<div class="divTable" style="width: 100%;">
+		<div class="divTableBody" id="t_table">
+			<div class="divTableRow">	
+				<div class="divTableCell">		
+					<input type="checkbox" id="chk_all" value="0" checked="true">
+				</div>	
+				<div class="divTableCell"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div id="map" style="width: 90%; float:right"></div>
+<script>
+	const map = L.map('map',{
+		scrollWheelZoom: false,
+		zoomControl: false
+	}).setView([20.652904, -103.41568], 15);
+	
+	var tiles = L.tileLayer('https://{s}.tile.jawg.io/jawg-light/{z}/{x}/{y}{r}.png?access-token=1i0RoqbTk8ST1d3A75HHWplbOtWf1ZmEtzdnSUjQCUx6HWOjPaW8n9dEhvwzpr5n', {
+  		attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+		minZoom: 15,
+		maxZoom: 21
+	}).addTo(map);
+	
+	const layerGroup = L.layerGroup();
+	let territorios = [];
+	
+	// territory 1
+	const fg_t01 = L.featureGroup();
+	territorios.push(fg_t01);
+	
+	new L.polygon([
+		[20.658888, -103.446794],
+		[20.659003, -103.446397],
+		[20.659048, -103.446085],
+		[20.659058, -103.445726],
+		[20.658848, -103.442588],
+		[20.654039, -103.44291],
+		[20.652771, -103.44332],
+		[20.652774, -103.443704],
+		[20.652892, -103.444047],
+		[20.653507, -103.445152],
+		[20.653738, -103.445141],
+		[20.654029, -103.445184],
+		[20.65429, -103.445265],
+		[20.658431, -103.446997],
+		[20.658707, -103.446928]
+	], {
+		color: '#3F7017',
+		fillColor: '#3F7017',
+		fillOpacity: 0.1,
+	}).addTo(fg_t01);
+    
+
+	new L.marker([20.6564, -103.444669], {
+    	icon: new L.DivIcon({
+        	className: 'my-number',
+        	html: '1'
+    	})
+	}).addTo(fg_t01);
+	
+	new L.marker([20.653868, -103.443328], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'A'
+    	})
+	}).addTo(fg_t01);
+	
+	new L.marker([20.655866, -103.443038], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'B'
+    	})
+	}).addTo(fg_t01);
+	
+	new L.marker([20.658657, -103.445324], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'C'
+    	})
+	}).addTo(fg_t01);
+	
+	layerGroup.addLayer(fg_t01);
+	
+	
+	// territory 2
+	const fg_t02 = L.featureGroup();
+	territorios.push(fg_t02);
+	
+	new L.polygon([
+		[20.653507, -103.445152],
+		[20.652892, -103.444047],
+		[20.652774, -103.443704],
+		[20.652771, -103.44332],
+		[20.651323, -103.443709],
+		[20.650048, -103.443205],
+		[20.649923, -103.443097],
+		[20.649802, -103.441805],
+		[20.649837, -103.441397],
+		[20.648352, -103.441536],
+		[20.648587, -103.442888],
+		[20.649501, -103.44328],
+		[20.649632, -103.443414],
+		[20.649762, -103.443688],
+		[20.650068, -103.443924],
+		[20.652397, -103.444916],
+		[20.65298, -103.445114]
+	], {
+		color: '#78DC26',
+		fillColor: '#78DC26',
+		fillOpacity: 0.1
+	}).addTo(fg_t02); 
+	
+	new L.marker([20.65183, -103.444144], {
+    	icon: new L.DivIcon({
+        	className: 'my-number',
+        	html: '2'
+    	})
+	}).addTo(fg_t02);
+	
+	new L.marker([20.650364, -103.443639], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'A'
+    	})
+	}).addTo(fg_t02);
+	
+	new L.marker([20.64916, -103.44203], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'B'
+    	})
+	}).addTo(fg_t02);
+	
+	new L.polygon([
+		[20.649421, -103.442196],
+		[20.649391, -103.441853],
+		[20.648803, -103.441912],
+		[20.648853, -103.442255]
+	], {
+		color: '#78DC26',
+		fillColor: '#78DC26',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t02); 
+	
+	layerGroup.addLayer(fg_t02);
+
+	// territory 3
+	const fg_t03 = L.featureGroup();
+	territorios.push(fg_t03);
+	
+	new L.polygon([
+		[20.652734, -103.443258],
+		[20.652302, -103.441487],
+		[20.651976, -103.441562],
+		[20.6518, -103.441568],
+		[20.651649, -103.441531],
+		[20.651549, -103.441477],		
+		[20.651248, -103.441321],
+		[20.649913, -103.441406],
+		[20.649867, -103.44174],
+		[20.649933, -103.442619],
+		[20.649933, -103.442963],
+		[20.649983, -103.44307],
+		[20.650043, -103.443124],
+		[20.651303, -103.443623]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.651268, -103.442068], {
+    	icon: new L.DivIcon({
+        	className: 'my-number',
+        	html: '3'
+    	})
+	}).addTo(fg_t03);
+	
+	new L.marker([20.652382, -103.442411], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'A'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.652734, -103.443258],
+		[20.652302, -103.441487],
+		[20.652041, -103.441558],
+		[20.652473, -103.443334]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03); 
+
+	new L.marker([20.652026, -103.442475], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'B'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.652397, -103.44335],
+		[20.651981, -103.441558],
+		[20.651805, -103.441569],
+		[20.651634, -103.441526],
+		[20.652101, -103.443425]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03); 
+
+	new L.marker([20.65172, -103.442829], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'C'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.652036, -103.443441],
+		[20.651725, -103.442191],
+		[20.651399, -103.442202],
+		[20.65172, -103.443521]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.651348, -103.442899], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'D'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.651644, -103.443537],
+		[20.651328, -103.442207],
+		[20.651002, -103.442218],
+		[20.651343, -103.443629]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.650972, -103.443038], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'E'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.651273, -103.443612],
+		[20.651037, -103.442658],
+		[20.650681, -103.442668],
+		[20.650871, -103.443462]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.650585, -103.443017], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'F'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.650801, -103.443441],
+		[20.65061, -103.442674],
+		[20.650329, -103.442684],
+		[20.650475, -103.443296]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.650174, -103.442953], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'G'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.650405, -103.443269],
+		[20.650259, -103.442684],
+		[20.649943, -103.442701],
+		[20.649953, -103.442963],
+		[20.649993, -103.443081],
+		[20.650038, -103.443124]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.65047, -103.442443], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'H'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.651017, -103.442582],
+		[20.650927, -103.442223],
+		[20.649903, -103.442277],
+		[20.649933, -103.442625]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.65043, -103.441998], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'I'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.650907, -103.442148],
+		[20.650811, -103.441794],
+		[20.649867, -103.441831],
+		[20.649898, -103.442207]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	new L.marker([20.650344, -103.441563], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'J'
+    	})
+	}).addTo(fg_t03);
+
+	new L.polygon([
+		[20.650791, -103.441719],
+		[20.650706, -103.441359],
+		[20.649928, -103.441402],
+		[20.649867, -103.441762]
+	], {
+		color: '#164801',
+		fillColor: '#164801',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t03);
+
+	layerGroup.addLayer(fg_t03);
+
+	// territory 4
+	const fg_t04 = L.featureGroup();
+	territorios.push(fg_t04);
+	
+	new L.polygon([
+		[20.658858, -103.442518],
+		[20.658617, -103.439466],
+		[20.657482, -103.43967],
+		[20.655906, -103.440109],
+		[20.655685, -103.440185],
+		[20.655474, -103.44027],
+		[20.655133, -103.440592],
+		[20.654762, -103.440818],
+		[20.65445, -103.440903],
+		[20.652503, -103.441461],
+		[20.652935, -103.443221],
+		[20.653979, -103.442845]
+	], {
+		color: '#865C1C',
+		fillColor: '#865C1C',
+		fillOpacity: 0.1
+	}).addTo(fg_t04);
+
+	new L.marker([20.656027, -103.441687], {
+    	icon: new L.DivIcon({
+        	className: 'my-number',
+        	html: '4'
+    	})
+	}).addTo(fg_t04);
+
+	new L.marker([20.655585, -103.440378], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'A'
+    	})
+	}).addTo(fg_t04);
+
+	new L.marker([20.658426, -103.439766], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'B'
+    	})
+	}).addTo(fg_t04);
+
+	layerGroup.addLayer(fg_t04);
+
+	// territory 5
+	const fg_t05 = L.featureGroup();
+	territorios.push(fg_t05);
+	
+	new L.polygon([
+		[20.658566, -103.439144],
+		[20.658446, -103.43761],
+		[20.655203, -103.438071],
+		[20.654782, -103.43821],
+		[20.652653, -103.438565],
+		[20.652392, -103.440646],
+		[20.652463, -103.44115],
+		[20.654681, -103.440485],
+		[20.655424, -103.439884],
+		[20.657532, -103.439348]
+	], {
+		color: '#35EADC',
+		fillColor: '#35EADC',
+		fillOpacity: 0.1,
+		className: 'my-area'
+	}).addTo(fg_t05);
+
+	new L.marker([20.655725, -103.439122], {
+    	icon: new L.DivIcon({
+        	className: 'my-number',
+        	html: '5'
+    	})
+	}).addTo(fg_t05);
+
+	new L.marker([20.65422, -103.438951], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'A'
+    	})
+	}).addTo(fg_t05);
+
+	new L.polygon([
+		[20.65436, -103.439401],
+		[20.6544, -103.438275],
+		[20.653838, -103.438371],
+		[20.653999, -103.439455]
+	], {
+		color: '#35EADC',
+		fillColor: '#35EADC',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t05);
+
+	new L.marker([20.65422, -103.439637], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'B'
+    	})
+	}).addTo(fg_t05);
+
+	new L.polygon([
+		[20.65434, -103.439745],
+		[20.65435, -103.439498],
+		[20.654009, -103.439541],
+		[20.654029, -103.439798]
+	], {
+		color: '#35EADC',
+		fillColor: '#35EADC',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t05);
+
+	new L.marker([20.65426, -103.440067], {
+    	icon: new L.DivIcon({
+        	className: 'my-square',
+        	html: 'C'
+    	})
+	}).addTo(fg_t05);
+
+	new L.polygon([
+		[20.65432, -103.440228],
+		[20.65433, -103.439841],
+		[20.654049, -103.439884],
+		[20.654109, -103.440292]
+	], {
+		color: '#35EADC',
+		fillColor: '#35EADC',
+		fillOpacity: 0.1,
+		className: 'my-square-area'
+	}).addTo(fg_t05);
+
+	layerGroup.addLayer(fg_t05);
+	map.fitBounds(fg_t05.getBounds());
+
+
+	
+	
+	map.addLayer(layerGroup);
+	
+	const popup = L.popup()
+		.setLatLng([20.652904, -103.41568])
+		.setContent('I am a standalone popup.')
+		.openOn(map);
+
+	function onMapClick(e) {
+		popup
+			.setLatLng(e.latlng)
+			.setContent(`${e.latlng.toString()}`)
+			.openOn(map);
+	}
+
+	map.on('click', onMapClick);
+	
+	let data = "";	
+	territorios.forEach(myFunction);	
+	function myFunction(value, index, array) {
+		var num = (index+1);
+  		data += "<div class=\"divTableRow\">"+
+				"	<div class=\"divTableCell\">"+
+				"		<input type=\"checkbox\" class=\"territorio\" id=\"chk_t"+num+"\" value=\""+value._leaflet_id+"\" checked> <label for=\"chk_t"+num+"\">Territorio "+num+"</label>"+
+				"	</div>"+
+				"	<div class=\"divTableCell\">"+
+				"		<a class=\"aim\" data-id=\""+value._leaflet_id+"\" href=\"#\"><img src=\"https://cdn-icons-png.flaticon.com/512/2910/2910805.png\" alt=\""+value._leaflet_id+"\" width=\"14\" height=\"14\"></a>"+
+				"	</div>"+
+				"</div>"; 
+	}
+	var current = jQuery('#t_table').html();
+	jQuery('#t_table').html(current + data);
+	
+	jQuery('.territorio').change(function() {
+		var lyr =  territorios.find(itm => itm._leaflet_id === parseInt(jQuery(this).val()));    	
+		//var lyr = layerGroup.getLayer(parseInt(jQuery(this).val()));
+        if (jQuery(this).is(':checked')) {        
+            layerGroup.addLayer(lyr); //show
+        } else {        
+            layerGroup.removeLayer(lyr); //hide
+        }
+    });
+    
+    jQuery('#aim_home').click(function() {
+        map.setView([20.652904, -103.41568], 15); 	
+    });
+
+	jQuery('#chk_all').click(function() {
+        if (jQuery(this).is(':checked')) {        
+            jQuery('.territorio').prop("checked", true);
+        } else {        
+            jQuery('.territorio').prop("checked", false);
+        }
+		jQuery('.territorio').trigger('change');
+    });
+    
+    jQuery('.aim').click(function() {
+    	var lyr =  territorios.find(itm => itm._leaflet_id === parseInt(jQuery(this).attr('data-id')));
+    	//var lyr = layerGroup.getLayer(parseInt(jQuery(this).attr('data-id')));
+    	map.fitBounds(lyr.getBounds());
+    });
+
+	map.on('zoomend',function(e) {
+		if(map.getZoom() >= 17) {
+			jQuery('.my-square').css('display', 'block');
+			jQuery('.my-square-area').css('display', 'block');
+			jQuery('.my-number').css('font-size', '3em');
+			jQuery('.my-area').css('display', 'none');
+		}
+		else {
+			jQuery('.my-square').css('display', 'none');
+			jQuery('.my-square-area').css('display', 'none');
+			jQuery('.my-number').css('font-size', '1.4em');
+			jQuery('.my-area').css('display', 'block');
+		}
+	});
+
+</script>
+
+</body>
+</html>
